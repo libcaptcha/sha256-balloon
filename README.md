@@ -139,6 +139,12 @@ npm start
 npm test
 ```
 
+## Formatting
+
+```bash
+npx prtfm
+```
+
 ## License
 
 [MIT](LICENSE)
