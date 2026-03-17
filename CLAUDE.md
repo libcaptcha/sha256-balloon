@@ -1,0 +1,1 @@
+Write standard production code following current language standards, with few files to avoid clutter, clear structure, self-documenting style, no comments, CONCISE, SHORT and readable, max 90 chars per line, no variable name abbreviation, early returns and extracted functions to keep nesting below 4, simple control flow. Use few words in your response, return mostly code.

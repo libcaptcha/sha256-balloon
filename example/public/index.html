@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>sha256-balloon PoW Demo</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: system-ui, sans-serif;
+                max-width: 640px;
+                margin: 2rem auto;
+                padding: 0 1rem;
+                color: #1a1a2e;
+                background: #f5f5f7;
+            }
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+            .sub {
+                color: #666;
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            #status {
+                padding: 1rem;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                font-weight: 500;
+            }
+            .mining {
+                background: #fff3cd;
+                color: #856404;
+            }
+            .ok {
+                background: #d4edda;
+                color: #155724;
+            }
+            .err {
+                background: #f8d7da;
+                color: #721c24;
+            }
+            button {
+                padding: 0.6rem 1.2rem;
+                border: none;
+                border-radius: 6px;
+                background: #1a1a2e;
+                color: white;
+                cursor: pointer;
+                font-size: 0.9rem;
+            }
+            button:disabled {
+                background: #999;
+                cursor: not-allowed;
+            }
+            pre {
+                margin-top: 1rem;
+                padding: 1rem;
+                background: #1a1a2e;
+                color: #e0e0e0;
+                border-radius: 8px;
+                overflow-x: auto;
+                font-size: 0.85rem;
+                white-space: pre-wrap;
+                min-height: 2rem;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>sha256-balloon</h1>
+        <p class="sub">Balloon Hashing PoW Challenge</p>
+        <div id="status" class="mining">Starting challenge&hellip;</div>
+        <button id="btn" disabled>Access Protected Resource</button>
+        <pre id="output"></pre>
+
+        <script type="module">
+            import { solveChallenge } from '/src/client.js';
+
+            const status = document.getElementById('status');
+            const btn = document.getElementById('btn');
+            const output = document.getElementById('output');
+            let token = null;
+
+            function fmt(n) {
+                if (n > 1e6) return `${(n / 1e6).toFixed(1)}M`;
+                if (n > 1e3) return `${(n / 1e3).toFixed(0)}K`;
+                return `${n}`;
+            }
+
+            try {
+                const result = await solveChallenge({
+                    workerUrl: '/src/worker.js',
+                    onProgress({ hashes, hashRate, workers }) {
+                        status.textContent =
+                            `Mining: ${fmt(hashes)} hashes` +
+                            ` @ ${fmt(hashRate)}H/s` +
+                            ` (${workers} workers)`;
+                    },
+                });
+                token = result.token;
+                status.className = 'ok';
+                status.textContent =
+                    `Solved in ${result.elapsed}ms` +
+                    ` — ${fmt(result.totalHashes)} hashes` +
+                    ` @ ${fmt(result.hashRate)}H/s` +
+                    ` (${result.workerCount} workers)`;
+                btn.disabled = false;
+            } catch (error) {
+                status.className = 'err';
+                status.textContent = `Challenge failed: ${error.message}`;
+            }
+
+            btn.addEventListener('click', async () => {
+                const res = await fetch('/protected', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                output.textContent = JSON.stringify(await res.json(), null, 2);
+            });
+        </script>
+    </body>
+</html>

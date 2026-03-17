@@ -1,0 +1,74 @@
+{
+    "name": "sha256-balloon",
+    "version": "1.0.0",
+    "description": "SHA-256, Balloon Hashing, and HMAC-signed PoW challenges",
+    "type": "module",
+    "main": "./src/index.js",
+    "types": "./src/index.d.ts",
+    "jsdelivr": "./src/index.js",
+    "unpkg": "./src/index.js",
+    "exports": {
+        ".": {
+            "types": "./src/index.d.ts",
+            "default": "./src/index.js"
+        },
+        "./sha256": {
+            "types": "./src/sha256.d.ts",
+            "default": "./src/sha256.js"
+        },
+        "./hmac": {
+            "types": "./src/hmac.d.ts",
+            "default": "./src/hmac.js"
+        },
+        "./balloon": {
+            "types": "./src/balloon.d.ts",
+            "default": "./src/balloon.js"
+        },
+        "./pow": {
+            "types": "./src/pow.d.ts",
+            "default": "./src/pow.js"
+        },
+        "./server": {
+            "types": "./src/server.d.ts",
+            "default": "./src/server.js"
+        },
+        "./client": {
+            "types": "./src/client.d.ts",
+            "default": "./src/client.js"
+        },
+        "./worker": {
+            "types": "./src/worker.d.ts",
+            "default": "./src/worker.js"
+        }
+    },
+    "files": [
+        "src/"
+    ],
+    "scripts": {
+        "test": "node --test test/*.test.js",
+        "start": "node example/server.js"
+    },
+    "keywords": [
+        "sha256",
+        "balloon-hashing",
+        "proof-of-work",
+        "hmac",
+        "memory-hard",
+        "pow"
+    ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=18"
+    },
+    "peerDependencies": {
+        "express": ">=4"
+    },
+    "peerDependenciesMeta": {
+        "express": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "express": "^4.21.0"
+    }
+}
