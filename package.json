@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "SHA-256, Balloon Hashing, and HMAC-signed PoW challenges",
     "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/libcaptcha/sha256-balloon"
+    },
     "main": "./src/index.js",
     "types": "./src/index.d.ts",
     "jsdelivr": "./src/index.js",
